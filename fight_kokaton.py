@@ -56,6 +56,7 @@ class Bird:
         self.img = __class__.imgs[(+5, 0)]
         self.rct: pg.Rect = self.img.get_rect()
         self.rct.center = xy
+        self.dire = (+5, 0)
 
     def change_img(self, num: int, screen: pg.Surface):
         """
@@ -172,13 +173,12 @@ class Explosion:
     def __init__(self, bomb_rct):
         """
         画像を読み込む
-        上下、左右それぞれ反転させた画像と通常の画像のリスト
+        上下左右反転させた画像と通常の画像のリスト
         爆発経過時間
         引数: 爆発する爆弾の中心座標
         """
         self.img = pg.image.load("fig/explosion.gif")
-        self.imgs = [self.img, pg.transform.flip(self.img, True, False),
-                     pg.transform.flip(self.img, False, True)]
+        self.imgs = [self.img, pg.transform.flip(self.img, True, True)]
         self.rct = bomb_rct
         self.life = 0
 
@@ -189,9 +189,9 @@ class Explosion:
         if self.life >= 20:
             screen.blit(self.imgs[1], self.rct)
         if self.life >= 10:
-            screen.blit(self.imgs[2], self.rct)
-        if self.life > 0:
             screen.blit(self.imgs[0], self.rct)
+        if self.life > 0:
+            screen.blit(self.imgs[1], self.rct)
 
 
 
