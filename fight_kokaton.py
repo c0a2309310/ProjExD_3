@@ -3,6 +3,7 @@ import random
 import sys
 import time
 import pygame as pg
+import math
 
 
 WIDTH = 1100  # ゲームウィンドウの幅
@@ -82,6 +83,7 @@ class Bird:
             self.rct.move_ip(-sum_mv[0], -sum_mv[1])
         if not (sum_mv[0] == 0 and sum_mv[1] == 0):
             self.img = __class__.imgs[tuple(sum_mv)]
+            self.dire = sum_mv
         screen.blit(self.img, self.rct)
 
 
@@ -98,7 +100,6 @@ class Beam:
         self.rct = self.img.get_rect()
         self.rct.centery = bird.rct.centery #こうかとんの中心縦座標
         self.rct.right = bird.rct.right #こうかとんの右座標
-        self.vx, self.vy = +5, 0
 
     def update(self, screen: pg.Surface):
         """
@@ -248,7 +249,7 @@ def main():
         bird.update(key_lst, screen)  
         bombs = [bomb for bomb in bombs if bomb is not None]#Noneになった爆弾を消去
         beams = [beam for beam in beams if beam is not None]
-        beams = [beam for beam in beams if check_bound(beam.rct) == (True, True)]
+        beams = [beam for beam in beams if check_bound(beam.rct) == (True, True)]#画面外に出たビームを消去
         explosion = [explom for explom in explosion if explom.life > 0]
         for bomb in bombs:
             bomb.update(screen)
